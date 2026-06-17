@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<!-- saved from url=(0046)file:///Users/sherrychang/Downloads/index.html -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>方证体质地图</title>
+<script src="./方证体质地图_files/saved_resource"></script>
+<script src="./方证体质地图_files/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap');
+  body { background: #FAF8F5; font-family: 'Noto Serif SC', 'PingFang SC', 'Microsoft YaHei', serif; }
+  .pattern-bg {
+    background-color: #FAF8F5;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238B4513' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .card { background: #fff; border: 1px solid #e8ddd0; border-radius: 12px; box-shadow: 0 2px 12px rgba(139,69,19,0.07); }
+  .btn-primary { background: #8B4513; color: #fff; border-radius: 8px; padding: 12px 28px; font-size: 16px; cursor: pointer; transition: background 0.2s; border: none; }
+  .btn-primary:hover { background: #7B3B0F; }
+  .btn-primary:disabled { background: #c4a882; cursor: not-allowed; }
+  .tag { border: 1px solid #8B4513; color: #8B4513; border-radius: 99px; padding: 4px 14px; font-size: 13px; cursor: pointer; background: transparent; transition: all 0.15s; }
+  .tag:hover { background: #8B4513; color: #fff; }
+  .section-title { font-size: 13px; letter-spacing: 0.15em; color: #8B4513; text-align: center; margin-bottom: 20px; }
+  .accordion-btn { width: 100%; text-align: left; background: #fdf6ef; border: 1px solid #e8ddd0; border-radius: 8px; padding: 12px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 15px; color: #3d2008; transition: background 0.15s; }
+  .accordion-btn:hover { background: #f5ebe0; }
+  .accordion-content { display: none; padding: 16px; border: 1px solid #e8ddd0; border-top: none; border-radius: 0 0 8px 8px; background: #fff; font-size: 14px; color: #5a3a1a; line-height: 1.8; }
+  .accordion-content.open { display: block; }
+  .diet-card { border: 1px solid #e8ddd0; border-radius: 10px; padding: 16px; background: #fffcf8; }
+  .diet-role { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; padding: 3px 10px; border-radius: 99px; display: inline-block; margin-bottom: 8px; }
+  .role-jun { background: #fdebd0; color: #7d4a0a; }
+  .role-chen { background: #d5f5e3; color: #1a6b3a; }
+  .role-zuo { background: #d6eaf8; color: #1a4a6b; }
+  .role-shi { background: #e8daef; color: #5b2c6f; }
+  .spinner { width: 40px; height: 40px; border: 3px solid #e8ddd0; border-top-color: #8B4513; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .radar-container { position: relative; max-width: 380px; margin: 0 auto; }
+  .tcm-card { border-left: 4px solid #8B4513; }
+  .western-card { border-left: 4px solid #2D6BA0; }
+  .formula-card { border: 1px solid #e8ddd0; border-radius: 10px; padding: 16px; background: #fffcf8; margin-bottom: 10px; }
+  .avoid-tag { background: #fdebd0; color: #7d4a0a; border-radius: 99px; padding: 2px 12px; font-size: 13px; display: inline-block; margin: 3px; }
+  input[type="text"], input[type="password"], textarea {
+    border: 1px solid #e8ddd0; border-radius: 8px; padding: 10px 14px;
+    font-size: 15px; width: 100%; outline: none; background: #fff;
+    font-family: inherit; transition: border-color 0.15s;
+  }
+  input:focus, textarea:focus { border-color: #8B4513; }
+</style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.mx-auto{margin-left:auto;margin-right:auto}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.min-h-screen{min-height:100vh}.max-w-2xl{max-width:42rem}.max-w-3xl{max-width:48rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.px-4{padding-left:1rem;padding-right:1rem}.py-10{padding-top:2.5rem;padding-bottom:2.5rem}.pb-16{padding-bottom:4rem}.text-center{text-align:center}</style></head>
+<body class="pattern-bg min-h-screen">
+
+<!-- 页眉 -->
+<header class="text-center py-10 px-4">
+  <div style="font-size:13px;letter-spacing:0.2em;color:#8B4513;margin-bottom:8px;">远古岐黄 · 当代智慧</div>
+  <h1 style="font-size:32px;font-weight:700;color:#3d2008;letter-spacing:0.05em;">方证体质地图</h1>
+  <p style="font-size:15px;color:#8a6a50;margin-top:8px;">中西贯通的体质辨识与调理助手</p>
+  <div style="width:60px;height:2px;background:#8B4513;margin:16px auto 0;opacity:0.4;"></div>
+</header>
+
+<!-- API Key 区域 -->
+<div class="max-w-2xl mx-auto px-4 mb-6">
+  <div class="card p-5">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+      <div style="background:#fdebd0;border-radius:8px;padding:8px;font-size:18px;">🔑</div>
+      <div>
+        <div style="font-size:15px;font-weight:600;color:#3d2008;">Claude API 密钥</div>
+        <div style="font-size:12px;color:#8a6a50;">密钥仅存于浏览器 Session，关闭标签页后自动清除</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <input type="password" id="apiKey" placeholder="sk-ant-api03-..." style="flex:1;">
+      <button class="btn-primary" onclick="saveKey()" style="padding:10px 20px;font-size:14px;">保存</button>
+    </div>
+    <div id="keyStatus" style="font-size:12px;margin-top:8px;color:#8a6a50;"></div>
+  </div>
+</div>
+
+<!-- 主输入区 -->
+<div class="max-w-2xl mx-auto px-4 mb-8">
+  <div class="card p-6">
+    <div class="section-title">症 状 描 述</div>
+    <div style="font-size:16px;font-weight:600;color:#3d2008;margin-bottom:12px;">请用自然语言描述您的症状与身体感受</div>
+    <textarea id="symptoms" rows="5" placeholder="例如：最近总是手脚冰凉，即使夏天也怕冷，腰膝酸软，容易疲倦，夜间小便频繁……"></textarea>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;flex-wrap:wrap;gap:10px;">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="tag" onclick="fillExample(0)">示例一：阳虚体质</button>
+        <button class="tag" onclick="fillExample(1)">示例二：气血两虚</button>
+        <button class="tag" onclick="fillExample(2)">示例三：肝郁痰湿</button>
+      </div>
+      <button class="btn-primary" id="analyzeBtn" onclick="analyze()">开始分析 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- 错误提示 -->
+<div id="errorBox" class="max-w-2xl mx-auto px-4 mb-6" style="display:none;">
+  <div style="background:#fff5f5;border:1px solid #f5c6c6;border-radius:10px;padding:16px;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <span>⚠️</span><span style="font-weight:600;color:#c0392b;">分析失败</span>
+    </div>
+    <div id="errorMsg" style="font-size:13px;color:#c0392b;"></div>
+  </div>
+</div>
+
+<!-- 加载动画 -->
+<div id="loading" class="max-w-2xl mx-auto px-4 mb-6 text-center" style="display:none;">
+  <div class="spinner"></div>
+  <div style="margin-top:12px;color:#8a6a50;font-size:14px;">正在辨证分析，请稍候……</div>
+</div>
+
+<!-- 结果区域 -->
+<div id="results" style="display:none;" class="max-w-3xl mx-auto px-4 pb-16">
+
+  <!-- 体质雷达图 -->
+  <div class="card p-6 mb-6">
+    <div class="section-title">体 质 雷 达 图</div>
+    <div class="radar-container">
+      <canvas id="radarChart"></canvas>
+    </div>
+    <div id="constitutionSummary" style="text-align:center;margin-top:16px;font-size:15px;color:#3d2008;"></div>
+  </div>
+
+  <!-- 双视角卡片 -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;" class="dual-cards">
+    <div class="card p-5 tcm-card">
+      <div style="font-size:13px;letter-spacing:0.1em;color:#8B4513;margin-bottom:10px;">🌿 中医视角</div>
+      <div id="tcmPattern" style="font-size:18px;font-weight:700;color:#3d2008;margin-bottom:8px;"></div>
+      <div id="tcmPathogenesis" style="font-size:14px;color:#5a3a1a;line-height:1.8;margin-bottom:8px;"></div>
+      <div id="tcmSignals" style="font-size:13px;color:#8a6a50;line-height:1.7;"></div>
+    </div>
+    <div class="card p-5 western-card">
+      <div style="font-size:13px;letter-spacing:0.1em;color:#2D6BA0;margin-bottom:10px;">🏥 西医视角</div>
+      <div id="westernConditions" style="margin-bottom:8px;"></div>
+      <div id="westernExplanation" style="font-size:14px;color:#2c3e50;line-height:1.8;margin-bottom:8px;"></div>
+      <div style="font-size:11px;color:#95a5a6;line-height:1.6;" id="westernDisclaimer"></div>
+    </div>
+  </div>
+
+  <!-- 推理链条 -->
+  <div class="card p-6 mb-6">
+    <div class="section-title">AI 推 理 过 程</div>
+    <div id="reasoningChain" style="display:flex;flex-direction:column;gap:8px;"></div>
+  </div>
+
+  <!-- 方剂推荐 -->
+  <div class="card p-6 mb-6">
+    <div class="section-title">参 考 方 剂</div>
+    <div id="formulaList"></div>
+    <div style="font-size:12px;color:#95a5a6;margin-top:12px;padding-top:12px;border-top:1px solid #e8ddd0;">
+      ⚠️ 方剂仅供参考，请在专业中医师指导下使用，切勿自行配药。
+    </div>
+  </div>
+
+  <!-- 饮食调理 -->
+  <div class="card p-6 mb-6">
+    <div class="section-title">饮 食 调 理</div>
+    <div style="font-size:13px;color:#8a6a50;text-align:center;margin-bottom:16px;">依君臣佐使之道，以食养身</div>
+    <div id="dietGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;"></div>
+    <div id="avoidSection" style="border-top:1px solid #e8ddd0;padding-top:14px;"></div>
+  </div>
+
+</div>
+
+<!-- 页脚 -->
+<footer style="text-align:center;padding:24px;border-top:1px solid #e8ddd0;margin-top:20px;">
+  <p style="font-size:12px;color:#8a6a50;max-width:600px;margin:0 auto;line-height:1.8;">
+    本工具基于中医经典理论与现代人工智能技术，所有内容仅供健康参考与学习，不构成任何医疗诊断或治疗建议。<br>如有健康问题，请及时就医。中医调理需因人而异，建议在专业中医师指导下进行。
+  </p>
+</footer>
+
+<script>
+const EXAMPLES = [
+  "我最近总是手脚冰凉，即使夏天也特别怕冷，腰膝酸软，容易疲倦乏力。早上起来面色发白，食欲不振，大便经常偏稀或不成形。夜间小便频繁，睡眠质量差，白天精神不振。舌淡苔白，脉沉细。感觉整个人的能量都不够用。",
+  "我经常感到头晕眼花，面色苍白或发黄，嘴唇和指甲颜色很淡。心悸气短，稍微活动一下就很累。月经量少颜色淡，有时候推迟。睡眠不好，入睡困难，白天精神差，记忆力下降。说话声音也比较小，不太有力气。",
+  "我经常感到胸闷，情绪容易低落或烦躁，叹气比较多。消化不好，吃完饭容易腹胀，大便有时候不规律。喉咙有时感觉有东西堵着，吐不出来也咽不下去。睡眠差，多梦，舌苔白腻，感觉身体沉重。"
+];
+
+let radarChart = null;
+
+function fillExample(i) {
+  document.getElementById('symptoms').value = EXAMPLES[i];
+}
+
+function saveKey() {
+  const key = document.getElementById('apiKey').value.trim();
+  if (!key.startsWith('sk-ant-')) {
+    document.getElementById('keyStatus').style.color = '#c0392b';
+    document.getElementById('keyStatus').textContent = '密钥格式不正确，应以 sk-ant- 开头';
+    return;
+  }
+  sessionStorage.setItem('claudeKey', key);
+  document.getElementById('keyStatus').style.color = '#1a6b3a';
+  document.getElementById('keyStatus').textContent = '✓ 密钥已保存';
+}
+
+// 核心修复：强健的JSON提取函数
+function extractJSON(text) {
+  // 方法1：去除 markdown 代码块
+  let cleaned = text
+    .replace(/```json\s*/gi, '')
+    .replace(/```\s*/g, '')
+    .trim();
+
+  // 方法2：直接尝试解析
+  try { return JSON.parse(cleaned); } catch(e) {}
+
+  // 方法3：提取第一个完整的 {...} 块
+  const start = cleaned.indexOf('{');
+  const end = cleaned.lastIndexOf('}');
+  if (start !== -1 && end !== -1 && end > start) {
+    try { return JSON.parse(cleaned.slice(start, end + 1)); } catch(e) {}
+  }
+
+  // 方法4：逐步截断末尾尝试修复不完整JSON
+  if (start !== -1) {
+    let partial = cleaned.slice(start);
+    for (let i = partial.length; i > 10; i--) {
+      try {
+        const attempt = partial.slice(0, i);
+        // 补全可能缺失的括号
+        const opens = (attempt.match(/{/g) || []).length;
+        const closes = (attempt.match(/}/g) || []).length;
+        const fixed = attempt + '}'.repeat(Math.max(0, opens - closes));
+        return JSON.parse(fixed);
+      } catch(e) {}
+    }
+  }
+
+  throw new Error('无法解析 AI 返回的内容，请重试');
+}
+
+async function analyze() {
+  const key = sessionStorage.getItem('claudeKey') || document.getElementById('apiKey').value.trim();
+  if (!key) { alert('请先输入并保存 API 密钥'); return; }
+
+  const symptoms = document.getElementById('symptoms').value.trim();
+  if (!symptoms) { alert('请描述您的症状'); return; }
+
+  document.getElementById('errorBox').style.display = 'none';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('analyzeBtn').disabled = true;
+
+  const systemPrompt = `你是一位精通中西医的医学顾问。请根据用户描述的症状，进行体质分析。
+
+重要规则：
+1. 你的回复必须是且仅是一个合法的JSON对象，不得包含任何其他文字、解释或markdown格式
+2. 不要使用\`\`\`json或\`\`\`包裹
+3. 所有字符串值中不得包含未转义的引号或换行符
+4. 确保JSON完整，所有括号都正确闭合
+
+体质八维评分标准（0-100）：
+- yangDeficiency 阳虚：怕冷、手脚冰凉、夜尿频、精神萎靡
+- yinDeficiency 阴虚：潮热盗汗、手足心热、口干、舌红少苔
+- qiDeficiency 气虚：乏力气短、声音低微、自汗、脉虚
+- bloodDeficiency 血虚：面白唇淡、头晕心悸、月经量少、脉细
+- phlegmDampness 痰湿：身重、苔腻、腹胀、大便黏
+- bloodStasis 血瘀：刺痛固定、唇舌紫暗、肌肤甲错
+- liverQiStagnation 肝郁：情志不畅、胸胁胀满、善太息
+- qiStagnation 气郁：腹胀、嗳气、脉弦
+
+饮食君臣佐使定义：
+- 君食：最核心的调理食材，针对主要病机
+- 臣食：辅助君食、增强调理效果的食材
+- 佐食：配合使用、纠正偏性的食材
+- 使食：引导其他食材发挥作用、调和诸食的食材
+
+必须严格按以下JSON结构返回，不得增减字段：
+{"constitution":{"yangDeficiency":0,"yinDeficiency":0,"qiDeficiency":0,"bloodDeficiency":0,"phlegmDampness":0,"bloodStasis":0,"liverQiStagnation":0,"qiStagnation":0},"tcmView":{"mainPattern":"","pathogenesis":"","bodySignals":""},"westernView":{"possibleConditions":[""],"explanation":"","disclaimer":""},"reasoningChain":{"symptomClassification":"","constitutionJudgment":"","pathogenesisLocation":"","formulaPatternMatch":"","formulaRecommendation":[{"name":"","source":"","composition":"","indication":"","modification":""}]},"dietAdvice":{"junFood":{"name":"","tcmEffect":"","modernResearch":"","usage":""},"chenFood":{"name":"","tcmEffect":"","modernResearch":"","usage":""},"zuoFood":{"name":"","tcmEffect":"","modernResearch":"","usage":""},"shiFood":{"name":"","tcmEffect":"","modernResearch":"","usage":""},"avoidFoods":[""]}}`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 2000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: `请分析以下症状：${symptoms}` }]
+      })
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      throw new Error(err.error?.message || `API错误 ${resp.status}`);
+    }
+
+    const data = await resp.json();
+    const rawText = data.content?.[0]?.text || '';
+
+    // 使用强健的JSON提取
+    const result = extractJSON(rawText);
+    renderResults(result);
+
+  } catch(e) {
+    document.getElementById('errorBox').style.display = 'block';
+    document.getElementById('errorMsg').textContent = e.message;
+  } finally {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('analyzeBtn').disabled = false;
+  }
+}
+
+function renderResults(d) {
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // 雷达图
+  const c = d.constitution || {};
+  const labels = ['阳虚','阴虚','气虚','血虚','痰湿','血瘀','肝郁','气郁'];
+  const values = [
+    c.yangDeficiency||0, c.yinDeficiency||0, c.qiDeficiency||0, c.bloodDeficiency||0,
+    c.phlegmDampness||0, c.bloodStasis||0, c.liverQiStagnation||0, c.qiStagnation||0
+  ];
+
+  if (radarChart) radarChart.destroy();
+  const ctx = document.getElementById('radarChart').getContext('2d');
+  radarChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        backgroundColor: 'rgba(139,69,19,0.15)',
+        borderColor: '#8B4513',
+        borderWidth: 2,
+        pointBackgroundColor: '#8B4513',
+        pointRadius: 4
+      }]
+    },
+    options: {
+      animation: { duration: 1000 },
+      scales: { r: { min: 0, max: 100, ticks: { display: false }, grid: { color: '#e8ddd0' }, pointLabels: { font: { size: 13 }, color: '#3d2008' } } },
+      plugins: { legend: { display: false } }
+    }
+  });
+
+  // 主体质
+  const top = labels[values.indexOf(Math.max(...values))];
+  const second = [...values].sort((a,b)=>b-a)[1];
+  const secondLabel = labels[values.indexOf(second)];
+  document.getElementById('constitutionSummary').innerHTML =
+    `主要体质：<span style="color:#8B4513;font-weight:700;">${top}</span>` +
+    (second > 40 ? `　兼有：<span style="color:#8B4513;">${secondLabel}</span>` : '');
+
+  // 中医视角
+  const tcm = d.tcmView || {};
+  document.getElementById('tcmPattern').textContent = tcm.mainPattern || '';
+  document.getElementById('tcmPathogenesis').textContent = tcm.pathogenesis || '';
+  document.getElementById('tcmSignals').textContent = tcm.bodySignals || '';
+
+  // 西医视角
+  const w = d.westernView || {};
+  const conditions = (w.possibleConditions || []).map(c =>
+    `<span style="background:#e8f4fd;color:#2D6BA0;border-radius:99px;padding:3px 12px;font-size:13px;display:inline-block;margin:3px;">${c}</span>`
+  ).join('');
+  document.getElementById('westernConditions').innerHTML = conditions;
+  document.getElementById('westernExplanation').textContent = w.explanation || '';
+  document.getElementById('westernDisclaimer').textContent = w.disclaimer || '以上内容仅供参考，不构成医疗诊断';
+
+  // 推理链条
+  const r = d.reasoningChain || {};
+  const steps = [
+    { label: '① 症状归类', content: r.symptomClassification },
+    { label: '② 体质判断', content: r.constitutionJudgment },
+    { label: '③ 病机定位', content: r.pathogenesisLocation },
+    { label: '④ 方证对应', content: r.formulaPatternMatch }
+  ];
+  document.getElementById('reasoningChain').innerHTML = steps.map((s, i) => `
+    <div>
+      <button class="accordion-btn" onclick="toggleAccordion(${i})">
+        <span>${s.label}</span><span id="arrow${i}">▼</span>
+      </button>
+      <div class="accordion-content" id="acc${i}">${s.content || '暂无内容'}</div>
+    </div>
+  `).join('');
+
+  // 方剂
+  const formulas = r.formulaRecommendation || [];
+  document.getElementById('formulaList').innerHTML = formulas.map(f => `
+    <div class="formula-card">
+      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:8px;">
+        <span style="font-size:18px;font-weight:700;color:#3d2008;">${f.name}</span>
+        <span style="font-size:12px;color:#8a6a50;">${f.source}</span>
+      </div>
+      <div style="font-size:13px;color:#5a3a1a;margin-bottom:6px;"><span style="color:#8a6a50;">组成：</span>${f.composition}</div>
+      <div style="font-size:13px;color:#5a3a1a;margin-bottom:6px;"><span style="color:#8a6a50;">主治：</span>${f.indication}</div>
+      <div style="font-size:13px;color:#5a3a1a;"><span style="color:#8a6a50;">加减：</span>${f.modification}</div>
+    </div>
+  `).join('') || '<div style="color:#8a6a50;font-size:14px;">暂无方剂推荐</div>';
+
+  // 饮食
+  const diet = d.dietAdvice || {};
+  const dietItems = [
+    { key: 'junFood', role: '君食', cls: 'role-jun' },
+    { key: 'chenFood', role: '臣食', cls: 'role-chen' },
+    { key: 'zuoFood', role: '佐食', cls: 'role-zuo' },
+    { key: 'shiFood', role: '使食', cls: 'role-shi' }
+  ];
+  document.getElementById('dietGrid').innerHTML = dietItems.map(item => {
+    const f = diet[item.key] || {};
+    return `
+      <div class="diet-card">
+        <span class="diet-role ${item.cls}">${item.role}</span>
+        <div style="font-size:16px;font-weight:700;color:#3d2008;margin-bottom:6px;">${f.name || ''}</div>
+        <div style="font-size:12px;color:#8a6a50;margin-bottom:4px;">中医功效</div>
+        <div style="font-size:13px;color:#5a3a1a;margin-bottom:8px;line-height:1.6;">${f.tcmEffect || ''}</div>
+        <div style="font-size:12px;color:#8a6a50;margin-bottom:4px;">现代研究</div>
+        <div style="font-size:13px;color:#2c3e50;margin-bottom:8px;line-height:1.6;">${f.modernResearch || ''}</div>
+        <div style="font-size:12px;background:#fdf6ef;border-radius:6px;padding:8px;color:#7d4a0a;line-height:1.6;">${f.usage || ''}</div>
+      </div>
+    `;
+  }).join('');
+
+  const avoidFoods = diet.avoidFoods || [];
+  document.getElementById('avoidSection').innerHTML = avoidFoods.length ? `
+    <div style="font-size:13px;color:#7d4a0a;font-weight:600;margin-bottom:8px;">⚠️ 建议避免</div>
+    <div>${avoidFoods.map(f => `<span class="avoid-tag">${f}</span>`).join('')}</div>
+  ` : '';
+}
+
+function toggleAccordion(i) {
+  const content = document.getElementById('acc' + i);
+  const arrow = document.getElementById('arrow' + i);
+  content.classList.toggle('open');
+  arrow.textContent = content.classList.contains('open') ? '▲' : '▼';
+}
+
+// 初始化：恢复已保存的key
+window.onload = () => {
+  const saved = sessionStorage.getItem('claudeKey');
+  if (saved) {
+    document.getElementById('apiKey').value = saved;
+    document.getElementById('keyStatus').textContent = '✓ 已加载保存的密钥';
+    document.getElementById('keyStatus').style.color = '#1a6b3a';
+  }
+};
+</script>
+
+<style>
+@media (max-width: 600px) {
+  .dual-cards { grid-template-columns: 1fr !important; }
+  #dietGrid { grid-template-columns: 1fr !important; }
+}
+</style>
+
+
+</body></html>
