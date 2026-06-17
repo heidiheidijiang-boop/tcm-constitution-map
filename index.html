@@ -630,6 +630,8 @@
   // ========================
   const SYSTEM_PROMPT = `你是一位精通中医经典理论的体质分析专家，同时具备现代医学知识。请根据用户描述的症状，进行全面的体质分析。
 
+【极其重要】你的回复必须是且只能是一个合法的JSON对象，从第一个字符「{」开始，到最后一个字符「}」结束。严禁包含任何markdown代码块标记（如\`\`\`json或\`\`\`）、严禁在JSON前后添加任何解释文字、严禁使用单引号替代双引号、严禁在JSON字符串值中使用未转义的换行符或特殊字符。
+
 你必须严格返回以下JSON格式，不要添加任何额外文字：
 {"constitution":{"yangDeficiency":数值0-100,"yinDeficiency":数值0-100,"qiDeficiency":数值0-100,"bloodDeficiency":数值0-100,"phlegmDampness":数值0-100,"bloodStasis":数值0-100,"liverQiStagnation":数值0-100,"qiStagnation":数值0-100},"tcmView":{"mainPattern":"主要证型","pathogenesis":"病机分析（100字以内）","bodySignals":"身体信号解读（100字以内）"},"westernView":{"possibleConditions":["可能相关西医疾病1","可能相关西医疾病2"],"explanation":"现代医学视角解读（100字以内）","disclaimer":"以上内容仅供参考，不构成医疗诊断"},"reasoningChain":{"symptomClassification":"症状分类分析（50字以内）","constitutionJudgment":"体质判断依据（50字以内）","pathogenesisLocation":"病机定位（50字以内）","formulaPatternMatch":"方证对应分析（50字以内）","formulaRecommendation":[{"name":"方剂名","source":"出处","composition":"组成","indication":"适应症（30字以内）","modification":"加减建议（30字以内）"}]},"dietAdvice":{"junFood":{"name":"食材名","tcmEffect":"中医功效（30字以内）","modernResearch":"现代研究发现（30字以内）","usage":"食用建议（20字以内）"},"chenFood":{"name":"食材名","tcmEffect":"中医功效（30字以内）","modernResearch":"现代研究发现（30字以内）","usage":"食用建议（20字以内）"},"zuoFood":{"name":"食材名","tcmEffect":"中医功效（30字以内）","modernResearch":"现代研究发现（30字以内）","usage":"食用建议（20字以内）"},"shiFood":{"name":"食材名","tcmEffect":"中医功效（30字以内）","modernResearch":"现代研究发现（30字以内）","usage":"食用建议（20字以内）"},"avoidFoods":["忌食食物1","忌食食物2","忌食食物3"]}}`;
 
@@ -759,16 +761,38 @@
       const data = await response.json();
       const rawText = data.content?.[0]?.text || '';
 
-      // Extract JSON from response
+      // Extract JSON from response with robust fallback handling
       let parsed;
+      const cleanJSON = (text) => {
+        // Strip markdown code fences (```json ... ``` or ``` ... ```)
+        let s = text.replace(/```(?:json)?\s*/gi, '').replace(/```\s*/g, '').trim();
+        // Remove any leading/trailing non-JSON characters before first { and after last }
+        const start = s.indexOf('{');
+        const end = s.lastIndexOf('}');
+        if (start !== -1 && end !== -1 && end > start) {
+          s = s.slice(start, end + 1);
+        }
+        return s;
+      };
       try {
-        // Try direct parse first
-        parsed = JSON.parse(rawText);
-      } catch {
-        // Try extracting JSON block
-        const match = rawText.match(/\{[\s\S]*\}/);
-        if (!match) throw new Error('AI 返回格式错误，未找到有效 JSON');
-        parsed = JSON.parse(match[0]);
+        parsed = JSON.parse(cleanJSON(rawText));
+      } catch (e1) {
+        // Second pass: try greedy match of outermost braces
+        try {
+          const match = rawText.match(/\{[\s\S]*\}/);
+          if (!match) throw new Error('no match');
+          parsed = JSON.parse(cleanJSON(match[0]));
+        } catch (e2) {
+          // Third pass: remove control characters and retry
+          try {
+            const sanitized = cleanJSON(rawText)
+              .replace(/[ -]/g, (c) => c === '\n' || c === '\r' || c === '\t' ? '' : '');
+            parsed = JSON.parse(sanitized);
+          } catch (e3) {
+            console.error('Raw response:', rawText);
+            throw new Error(`AI 返回格式错误，无法解析 JSON。原始错误：${e3.message}`);
+          }
+        }
       }
 
       renderResults(parsed);
