@@ -385,6 +385,23 @@
   <!-- ===== MAIN CONTENT ===== -->
   <main class="max-w-4xl mx-auto px-4 py-8">
 
+    <!-- File:// protocol warning (auto-hidden if served via HTTP) -->
+    <div id="file-protocol-warning" class="hidden mb-4 p-4 rounded-xl border" style="background:rgba(251,191,36,0.08);border-color:rgba(251,191,36,0.4);">
+      <div class="flex gap-3 items-start">
+        <span class="text-xl mt-0.5">⚠️</span>
+        <div>
+          <p class="font-bold text-sm mb-1" style="color:#92400E;">检测到 file:// 协议 — 请改用本地服务器打开</p>
+          <p class="text-xs leading-relaxed mb-2" style="color:#78350F;">直接双击打开 HTML 文件时，浏览器会阻止跨域 API 请求，导致「Failed to fetch」错误。</p>
+          <p class="text-xs font-mono p-2 rounded" style="background:rgba(0,0,0,0.06);color:#451A03;">
+            # 在此文件所在目录执行：<br>
+            python3 -m http.server 8080<br>
+            # 然后访问 → http://localhost:8080
+          </p>
+          <p class="en-label mt-2">Serving via file:// blocks cross-origin fetch. Use a local HTTP server instead.</p>
+        </div>
+      </div>
+    </div>
+
     <!-- API Key Section -->
     <div class="tcm-card p-5 mb-6 fade-in-up">
       <div class="flex items-start gap-3 mb-3">
@@ -766,11 +783,11 @@ function getHerbImage(name) {
       showKeyStatus('请输入 API 密钥', 'error');
       return;
     }
+    sessionStorage.setItem('claude_api_key', key);
+    document.getElementById('api-key-input').value = '••••••••••••••••' + key.slice(-6);
     if (!key.startsWith('sk-ant-')) {
-      showKeyStatus('密钥格式似乎不正确，应以 sk-ant- 开头', 'warn');
+      showKeyStatus('⚠ 密钥已保存，但格式可能不正确（通常以 sk-ant- 开头）', 'warn');
     } else {
-      sessionStorage.setItem('claude_api_key', key);
-      document.getElementById('api-key-input').value = '••••••••••••••••' + key.slice(-6);
       showKeyStatus('✓ 密钥已保存至 Session，仅在本次浏览期间有效', 'ok');
     }
   }
@@ -784,10 +801,10 @@ function getHerbImage(name) {
   }
 
   function getApiKey() {
-    return sessionStorage.getItem('claude_api_key') ||
-           (document.getElementById('api-key-input').value.startsWith('sk-ant-')
-             ? document.getElementById('api-key-input').value.trim()
-             : null);
+    const stored = sessionStorage.getItem('claude_api_key');
+    if (stored) return stored;
+    const inputVal = document.getElementById('api-key-input').value.trim();
+    return inputVal || null;
   }
 
   // ========================
@@ -917,7 +934,11 @@ function getHerbImage(name) {
 
     } catch (err) {
       console.error('Analysis error:', err);
-      showError(err.message || '未知错误，请稍后重试');
+      let errMsg = err.message || '未知错误，请稍后重试';
+      if (errMsg === 'Failed to fetch' || errMsg.includes('NetworkError') || errMsg.includes('fetch')) {
+        errMsg = '网络请求失败（Failed to fetch）。\n\n最常见原因：直接双击打开 HTML 文件时浏览器会阻止跨域请求。\n请改用本地服务器打开：在文件夹中执行 python3 -m http.server 8080，然后访问 http://localhost:8080';
+      }
+      showError(errMsg);
     } finally {
       setLoadingState(false);
     }
@@ -1266,6 +1287,11 @@ function getHerbImage(name) {
   // Init on load
   // ========================
   window.addEventListener('DOMContentLoaded', () => {
+    // Show file:// protocol warning
+    if (location.protocol === 'file:') {
+      document.getElementById('file-protocol-warning').classList.remove('hidden');
+    }
+
     // Restore API key display if saved
     const savedKey = sessionStorage.getItem('claude_api_key');
     if (savedKey) {
