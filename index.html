@@ -390,8 +390,9 @@
       <div class="flex items-start gap-3 mb-3">
         <div class="seal text-xs">API</div>
         <div>
-          <h3 class="font-bold text-sm" style="color:var(--brown); letter-spacing:1px;">Claude API 密钥</h3>
+          <h3 class="font-bold text-sm" style="color:var(--brown); letter-spacing:1px;">Claude API 密钥 <span class="en-label" style="font-size:10px;">· API Key</span></h3>
           <p class="text-xs mt-0.5" style="color:#6B5040;">密钥存储于浏览器 Session，关闭标签页后自动清除，不会上传至任何服务器</p>
+          <p class="en-label mt-0.5">Stored in sessionStorage only — cleared when tab closes, never sent to any server</p>
         </div>
       </div>
       <div class="flex gap-3">
@@ -460,7 +461,8 @@
             <span class="loading-dot text-xl" style="color:var(--brown);">☯</span>
           </div>
         </div>
-        <p class="font-bold text-lg mb-2" style="color:var(--brown); letter-spacing:2px;">正在望闻问切...</p>
+        <p class="font-bold text-lg mb-1" style="color:var(--brown); letter-spacing:2px;">正在望闻问切...</p>
+        <p class="en-label" style="text-align:center;">Observing · Listening · Inquiring · Palpating</p>
         <div class="flex justify-center gap-1 mt-3">
           <span class="loading-dot inline-block w-2 h-2 rounded-full" style="background:var(--brown); animation-delay:0s;"></span>
           <span class="loading-dot inline-block w-2 h-2 rounded-full" style="background:var(--brown); animation-delay:0.2s;"></span>
@@ -622,10 +624,12 @@
 
           <!-- Avoid Foods -->
           <div class="p-4 rounded-xl" style="background:linear-gradient(135deg, rgba(220,38,38,0.04), rgba(220,38,38,0.02)); border:1px solid rgba(220,38,38,0.12);">
-            <div class="flex items-center gap-2 mb-3">
+            <div class="flex items-center gap-3 mb-3">
               <span style="color:#DC2626; font-size:16px;">⊗</span>
-              <span class="text-sm font-bold tracking-wider" style="color:#B91C1C;">忌食食物</span>
-              <span class="text-xs text-red-500">Foods to Avoid</span>
+              <div>
+                <span class="text-sm font-bold tracking-wider" style="color:#B91C1C;">忌食食物</span>
+                <p class="en-label" style="color:#B91C1C;opacity:0.7;">Foods to Avoid</p>
+              </div>
             </div>
             <div id="avoid-foods" class="flex flex-wrap gap-2"></div>
           </div>
@@ -944,6 +948,7 @@ function getHerbImage(name) {
   // ========================
   function renderRadarChart(constitution) {
     const values = CONSTITUTION_KEYS.map(k => constitution[k] || 0);
+    const CONSTITUTION_EN = { yangDeficiency:'Yang Def', yinDeficiency:'Yin Def', qiDeficiency:'Qi Def', bloodDeficiency:'Blood Def', phlegmDampness:'Phlegm', bloodStasis:'Stasis', liverQiStagnation:'Liver Qi', qiStagnation:'Qi Stag' };
     const labels = CONSTITUTION_KEYS.map(k => CONSTITUTION_LABELS[k]);
 
     // Update main pattern badge
@@ -956,9 +961,12 @@ function getHerbImage(name) {
       const val = values[i];
       const intensity = val >= 70 ? '偏重' : val >= 40 ? '偏中' : '偏轻';
       const color = val >= 70 ? 'rgba(139,69,19,0.15)' : val >= 40 ? 'rgba(139,69,19,0.08)' : 'rgba(139,69,19,0.04)';
+      const EN_CONSTITUTION = { yangDeficiency:'Yang Def.', yinDeficiency:'Yin Def.', qiDeficiency:'Qi Def.', bloodDeficiency:'Blood Def.', phlegmDampness:'Phlegm-Damp', bloodStasis:'Blood Stasis', liverQiStagnation:'Liver Qi Stag.', qiStagnation:'Qi Stag.' };
+      const EN_INTENSITY = { '偏重':'Prominent', '偏中':'Moderate', '偏轻':'Mild' };
       return `<span class="constitution-badge" style="background:${color}; font-size:11px;">
-        ${CONSTITUTION_LABELS[k]} <strong>${val}</strong>
-        <span style="font-weight:normal;opacity:0.7;">${intensity}</span>
+        <span>${CONSTITUTION_LABELS[k]}</span>
+        <strong>${val}</strong>
+        <span style="font-weight:normal;opacity:0.5;font-size:9px;font-style:italic;font-family:Georgia,serif;">${EN_CONSTITUTION[k]}</span>
       </span>`;
     }).join('');
 
@@ -1171,27 +1179,50 @@ function getHerbImage(name) {
     foodCardsEl.innerHTML = foodKeys.map(key => {
       const food = dietAdvice[key] || {};
       const role = FOOD_ROLES[key];
+      const imgUrl = getHerbImage(food.name);
+      const FOOD_ROLE_EN = { junFood: 'Chief · Primary', chenFood: 'Deputy · Assistant', zuoFood: 'Assistant · Adjuvant', shiFood: 'Envoy · Guide' };
+      const imgHtml = imgUrl ? `
+        <div style="width:100%;height:90px;overflow:hidden;background:#F5EFE6;position:relative;">
+          <img src="${imgUrl}" alt="${food.name}" style="width:100%;height:100%;object-fit:cover;filter:sepia(25%) contrast(0.95);"
+            onerror="this.parentElement.style.display='none'">
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:4px 8px;background:linear-gradient(to top, rgba(44,24,16,0.55), transparent);">
+            <p style="color:rgba(245,230,208,0.9);font-size:10px;font-style:italic;font-family:Georgia,serif;">Bencao Gangmu · 本草纲目</p>
+          </div>
+        </div>` : '';
       return `
         <div class="food-card">
+          ${imgHtml}
           <!-- Role header -->
           <div class="px-4 py-3 flex items-center gap-2" style="background:${role.bg}; border-bottom:1px solid rgba(139,69,19,0.08);">
             <span class="food-role-tag" style="background:${role.color};color:white;">${role.label}</span>
-            <span class="font-bold text-sm" style="color:${role.color};">${role.desc}</span>
+            <div>
+              <span class="font-bold text-sm" style="color:${role.color};">${role.desc}</span>
+              <p class="en-label" style="color:${role.color};opacity:0.65;">${FOOD_ROLE_EN[key]}</p>
+            </div>
             <span class="ml-auto font-bold text-lg" style="color:${role.color};">${food.name || '—'}</span>
           </div>
           <!-- Food details -->
           <div class="p-4 space-y-3">
             <div class="flex gap-2">
               <span class="text-xs font-bold px-2 py-0.5 rounded shrink-0" style="background:rgba(139,69,19,0.08);color:var(--brown);">中医</span>
-              <p class="text-xs leading-relaxed" style="color:#4A3020;">${food.tcmEffect || ''}</p>
+              <div>
+                <p class="en-label mb-0.5">TCM Effect</p>
+                <p class="text-xs leading-relaxed" style="color:#4A3020;">${food.tcmEffect || ''}</p>
+              </div>
             </div>
             <div class="flex gap-2">
               <span class="text-xs font-bold px-2 py-0.5 rounded shrink-0" style="background:rgba(59,130,246,0.08);color:#1E40AF;">研究</span>
-              <p class="text-xs leading-relaxed text-blue-900">${food.modernResearch || ''}</p>
+              <div>
+                <p class="en-label-blue mb-0.5">Modern Research</p>
+                <p class="text-xs leading-relaxed text-blue-900">${food.modernResearch || ''}</p>
+              </div>
             </div>
             <div class="flex gap-2 pt-1 border-t" style="border-color:rgba(139,69,19,0.08);">
-              <span class="text-xs font-bold shrink-0" style="color:var(--gold);">✦ 食用建议</span>
-              <p class="text-xs" style="color:#6B5040;">${food.usage || ''}</p>
+              <span class="text-xs font-bold shrink-0" style="color:var(--gold);">✦</span>
+              <div>
+                <p class="en-label mb-0.5">Usage Advice</p>
+                <p class="text-xs" style="color:#6B5040;">${food.usage || ''}</p>
+              </div>
             </div>
           </div>
         </div>
