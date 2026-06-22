@@ -321,6 +321,21 @@
 
     #results-section { display: none; }
     #error-section { display: none; }
+  .en-label {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: #9B7B6B;
+    font-style: italic;
+    line-height: 1.3;
+  }
+  .en-label-blue {
+    font-family: 'Georgia', serif;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: #6B8BB5;
+    font-style: italic;
+  }
   </style>
 </head>
 <body class="min-h-screen bg-pattern">
@@ -402,9 +417,10 @@
         <span class="section-label">症状描述</span>
       </div>
 
-      <label class="block text-sm font-semibold mb-2" style="color:var(--brown);">
+      <label class="block text-sm font-semibold mb-1" style="color:var(--brown);">
         请用自然语言描述您的症状与身体感受
       </label>
+      <p class="en-label mb-2">Describe your symptoms and physical sensations in natural language</p>
       <textarea
         id="symptoms-input"
         class="tcm-input w-full px-4 py-3 text-sm resize-none"
@@ -415,13 +431,13 @@
       <div class="flex items-center justify-between mt-4">
         <div class="flex gap-2 flex-wrap">
           <button onclick="fillExample(1)" class="text-xs px-3 py-1.5 rounded-full border transition-colors hover:bg-amber-50" style="border-color:var(--brown-pale); color:var(--brown);">
-            示例一：阳虚体质
+            示例一：阳虚体质 <span class="en-label" style="color:inherit;opacity:0.65;font-size:9px;">· Yang Deficiency</span>
           </button>
           <button onclick="fillExample(2)" class="text-xs px-3 py-1.5 rounded-full border transition-colors hover:bg-amber-50" style="border-color:var(--brown-pale); color:var(--brown);">
-            示例二：气血两虚
+            示例二：气血两虚 <span class="en-label" style="color:inherit;opacity:0.65;font-size:9px;">· Qi & Blood Deficiency</span>
           </button>
           <button onclick="fillExample(3)" class="text-xs px-3 py-1.5 rounded-full border transition-colors hover:bg-amber-50" style="border-color:var(--brown-pale); color:var(--brown);">
-            示例三：肝郁痰湿
+            示例三：肝郁痰湿 <span class="en-label" style="color:inherit;opacity:0.65;font-size:9px;">· Liver Qi Stagnation & Phlegm-Damp</span>
           </button>
         </div>
         <button
@@ -506,15 +522,24 @@
           </div>
           <div class="p-5 space-y-4">
             <div>
-              <div class="section-label mb-1">主要证型</div>
+              <div class="flex items-baseline gap-2 mb-1">
+                <div class="section-label">主要证型</div>
+                <span class="en-label">Primary Pattern</span>
+              </div>
               <p id="tcm-main-pattern" class="font-bold text-lg" style="color:var(--brown);">—</p>
             </div>
             <div>
-              <div class="section-label mb-1">病机分析</div>
+              <div class="flex items-baseline gap-2 mb-1">
+                <div class="section-label">病机分析</div>
+                <span class="en-label">Pathogenesis</span>
+              </div>
               <p id="tcm-pathogenesis" class="text-sm leading-relaxed" style="color:#4A3020;"></p>
             </div>
             <div>
-              <div class="section-label mb-1">身体信号</div>
+              <div class="flex items-baseline gap-2 mb-1">
+                <div class="section-label">身体信号</div>
+                <span class="en-label">Body Signals</span>
+              </div>
               <p id="tcm-body-signals" class="text-sm leading-relaxed" style="color:#4A3020;"></p>
             </div>
           </div>
@@ -531,11 +556,17 @@
           </div>
           <div class="p-5 space-y-4">
             <div>
-              <div class="text-xs font-bold tracking-widest mb-2" style="color:#1E40AF; letter-spacing:2px;">可能相关疾病</div>
+              <div class="flex items-baseline gap-2 mb-2">
+                <div class="text-xs font-bold tracking-widest" style="color:#1E40AF; letter-spacing:2px;">可能相关疾病</div>
+                <span class="en-label-blue">Possibly Related Conditions</span>
+              </div>
               <div id="western-conditions" class="flex flex-wrap gap-2"></div>
             </div>
             <div>
-              <div class="text-xs font-bold tracking-widest mb-1" style="color:#1E40AF; letter-spacing:2px;">现代医学解读</div>
+              <div class="flex items-baseline gap-2 mb-1">
+                <div class="text-xs font-bold tracking-widest" style="color:#1E40AF; letter-spacing:2px;">现代医学解读</div>
+                <span class="en-label-blue">Modern Medical Interpretation</span>
+              </div>
               <p id="western-explanation" class="text-sm leading-relaxed text-blue-900"></p>
             </div>
             <div class="p-3 rounded-lg" style="background:rgba(239,68,68,0.06); border:1px solid rgba(239,68,68,0.15);">
@@ -568,6 +599,7 @@
           <div class="px-6 pb-6">
             <div class="divider-ornament mb-4">
               <span class="section-label">推荐方剂</span>
+              <span class="en-label" style="margin-left:4px;">Recommended Formulae</span>
             </div>
             <div id="formula-cards" class="space-y-3"></div>
           </div>
@@ -661,6 +693,63 @@
     { key: 'pathogenesisLocation', label: '病机定位', icon: '③', desc: 'Pathogenesis Location' },
     { key: 'formulaPatternMatch', label: '方证对应', icon: '④', desc: 'Formula Pattern Match' }
   ];
+
+  const HERB_IMAGES = {
+  // Herbs from 本草纲目
+  '人参': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bencao_Gangmu_-_人参.jpg/300px-Bencao_Gangmu_-_人参.jpg',
+  '黄芪': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Bencao_gangmu_huangqi.jpg/300px-Bencao_gangmu_huangqi.jpg',
+  '白术': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Bencao_gangmu_baizhu.jpg/300px-Bencao_gangmu_baizhu.jpg',
+  '茯苓': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Bencao_Gangmu_fuling.jpg/300px-Bencao_Gangmu_fuling.jpg',
+  '当归': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Bencao_gangmu_danggui.jpg/300px-Bencao_gangmu_danggui.jpg',
+  '熟地': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Bencao_gangmu_dihuang.jpg/300px-Bencao_gangmu_dihuang.jpg',
+  '地黄': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Bencao_gangmu_dihuang.jpg/300px-Bencao_gangmu_dihuang.jpg',
+  '生地': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Bencao_gangmu_dihuang.jpg/300px-Bencao_gangmu_dihuang.jpg',
+  '山药': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Bencao_gangmu_shanyao.jpg/300px-Bencao_gangmu_shanyao.jpg',
+  '枸杞': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Bencao_gangmu_gouqi.jpg/300px-Bencao_gangmu_gouqi.jpg',
+  '枸杞子': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Bencao_gangmu_gouqi.jpg/300px-Bencao_gangmu_gouqi.jpg',
+  '干姜': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Bencao_gangmu_jiangmu.jpg/300px-Bencao_gangmu_jiangmu.jpg',
+  '生姜': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Bencao_gangmu_jiangmu.jpg/300px-Bencao_gangmu_jiangmu.jpg',
+  '桂枝': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Bencao_gangmu_guizhi.jpg/300px-Bencao_gangmu_guizhi.jpg',
+  '肉桂': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Bencao_gangmu_guizhi.jpg/300px-Bencao_gangmu_guizhi.jpg',
+  '附子': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Bencao_gangmu_fuzi.jpg/300px-Bencao_gangmu_fuzi.jpg',
+  '甘草': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Bencao_gangmu_gancao.jpg/300px-Bencao_gangmu_gancao.jpg',
+  '炙甘草': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Bencao_gangmu_gancao.jpg/300px-Bencao_gangmu_gancao.jpg',
+  '大枣': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Bencao_gangmu_dazao.jpg/300px-Bencao_gangmu_dazao.jpg',
+  '红枣': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Bencao_gangmu_dazao.jpg/300px-Bencao_gangmu_dazao.jpg',
+  '黑豆': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Bencao_gangmu_heidou.jpg/300px-Bencao_gangmu_heidou.jpg',
+  '莲子': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Bencao_gangmu_lianzi.jpg/300px-Bencao_gangmu_lianzi.jpg',
+  '芡实': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Bencao_gangmu_qianshi.jpg/300px-Bencao_gangmu_qianshi.jpg',
+  '薏苡仁': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Bencao_gangmu_yiyiren.jpg/300px-Bencao_gangmu_yiyiren.jpg',
+  '薏米': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Bencao_gangmu_yiyiren.jpg/300px-Bencao_gangmu_yiyiren.jpg',
+  '桑葚': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Bencao_gangmu_sangshen.jpg/300px-Bencao_gangmu_sangshen.jpg',
+  '核桃': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Bencao_gangmu_hetao.jpg/300px-Bencao_gangmu_hetao.jpg',
+  '核桃仁': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Bencao_gangmu_hetao.jpg/300px-Bencao_gangmu_hetao.jpg',
+  '龙眼': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Bencao_gangmu_longyan.jpg/300px-Bencao_gangmu_longyan.jpg',
+  '桂圆': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Bencao_gangmu_longyan.jpg/300px-Bencao_gangmu_longyan.jpg',
+  '陈皮': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Bencao_gangmu_chenpi.jpg/300px-Bencao_gangmu_chenpi.jpg',
+  '川芎': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Bencao_gangmu_chuanxiong.jpg/300px-Bencao_gangmu_chuanxiong.jpg',
+  '白芍': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Bencao_gangmu_baishao.jpg/300px-Bencao_gangmu_baishao.jpg',
+  '芍药': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Bencao_gangmu_baishao.jpg/300px-Bencao_gangmu_baishao.jpg',
+  '柴胡': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Bencao_gangmu_chaihu.jpg/300px-Bencao_gangmu_chaihu.jpg',
+  '茯神': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Bencao_Gangmu_fuling.jpg/300px-Bencao_Gangmu_fuling.jpg',
+  '半夏': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Bencao_gangmu_banxia.jpg/300px-Bencao_gangmu_banxia.jpg',
+  '菊花': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Bencao_gangmu_juhua.jpg/300px-Bencao_gangmu_juhua.jpg',
+  '百合': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Bencao_gangmu_baihe.jpg/300px-Bencao_gangmu_baihe.jpg',
+  '麦冬': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Bencao_gangmu_maidong.jpg/300px-Bencao_gangmu_maidong.jpg',
+  '黑芝麻': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Bencao_gangmu_zhima.jpg/300px-Bencao_gangmu_zhima.jpg',
+};
+
+// Helper: find herb image by fuzzy matching food/herb name
+function getHerbImage(name) {
+  if (!name) return null;
+  // Exact match first
+  if (HERB_IMAGES[name]) return HERB_IMAGES[name];
+  // Partial match: check if name contains any key or key contains name
+  for (const key of Object.keys(HERB_IMAGES)) {
+    if (name.includes(key) || key.includes(name)) return HERB_IMAGES[key];
+  }
+  return null;
+}
 
   let radarChart = null;
 
@@ -1014,31 +1103,57 @@
     // Formula recommendations
     const formulaEl = document.getElementById('formula-cards');
     const formulas = reasoningChain.formulaRecommendation || [];
-    formulaEl.innerHTML = formulas.map(f => `
+    formulaEl.innerHTML = formulas.map(f => {
+      // Find image for first herb in composition
+      const herbNames = (f.composition || '').split(/[、，,]/);
+      let imgUrl = getHerbImage(f.name);
+      if (!imgUrl) {
+        for (const h of herbNames) {
+          imgUrl = getHerbImage(h.trim());
+          if (imgUrl) break;
+        }
+      }
+      const imgHtml = imgUrl ? `
+        <div class="mt-3 pt-3 border-t flex gap-3 items-start" style="border-color:rgba(139,69,19,0.1);">
+          <div style="flex-shrink:0;width:72px;height:88px;border-radius:6px;overflow:hidden;border:1px solid rgba(139,69,19,0.15);background:#F5EFE6;">
+            <img src="${imgUrl}" alt="${herbNames[0]}" style="width:100%;height:100%;object-fit:cover;filter:sepia(20%);"
+              onerror="this.parentElement.style.display='none'">
+          </div>
+          <div>
+            <p class="text-xs font-semibold mb-1" style="color:var(--brown);">本草图鉴</p>
+            <p class="en-label" style="color:#9B7B6B;">Materia Medica Illustration</p>
+            <p class="text-xs mt-1 opacity-60" style="color:var(--brown);">${herbNames[0].trim()} · 本草纲目</p>
+          </div>
+        </div>` : '';
+      return `
       <div class="formula-card">
         <div class="flex items-start gap-3 mb-3">
           <div style="min-width:40px;height:40px;background:var(--brown);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:700;letter-spacing:1px;text-align:center;line-height:1.3;">方<br>剂</div>
           <div>
             <h4 class="font-bold text-base" style="color:var(--brown);">${f.name}</h4>
-            <p class="text-xs opacity-60 mt-0.5" style="color:var(--brown);">出处：${f.source}</p>
+            <p class="text-xs opacity-60 mt-0.5" style="color:var(--brown);">出处：${f.source} <span class="en-label" style="opacity:0.8;">· Source</span></p>
           </div>
         </div>
         <div class="grid grid-cols-3 gap-3 text-xs">
           <div>
-            <div class="font-bold mb-1 opacity-60 tracking-wider" style="color:var(--brown); font-size:10px; letter-spacing:2px;">组成</div>
+            <div class="font-bold mb-0.5 tracking-wider" style="color:var(--brown); font-size:10px; letter-spacing:2px; opacity:0.7;">组成</div>
+            <div class="en-label mb-1">Composition</div>
             <p style="color:#4A3020;">${f.composition}</p>
           </div>
           <div>
-            <div class="font-bold mb-1 opacity-60 tracking-wider" style="color:var(--brown); font-size:10px; letter-spacing:2px;">适应症</div>
+            <div class="font-bold mb-0.5 tracking-wider" style="color:var(--brown); font-size:10px; letter-spacing:2px; opacity:0.7;">适应症</div>
+            <div class="en-label mb-1">Indication</div>
             <p style="color:#4A3020;">${f.indication}</p>
           </div>
           <div>
-            <div class="font-bold mb-1 opacity-60 tracking-wider" style="color:var(--brown); font-size:10px; letter-spacing:2px;">加减建议</div>
+            <div class="font-bold mb-0.5 tracking-wider" style="color:var(--brown); font-size:10px; letter-spacing:2px; opacity:0.7;">加减建议</div>
+            <div class="en-label mb-1">Modification</div>
             <p style="color:#4A3020;">${f.modification}</p>
           </div>
         </div>
+        ${imgHtml}
       </div>
-    `).join('');
+    `}).join('');
 
     // Auto-open reasoning chain
     if (!mainAccordionOpen) {
